@@ -24,3 +24,23 @@ $ ./crypto caesar_decrypt 'Uryyb jbeyq!' 13
 Hello world!
 ```
 shift must be between -127 and 127 inclusive
+
+## Simple substitution encrypt
+```
+$ ./crypto substitution_encrypt [plaintext] [original] [translation]
+```
+For example,
+```
+$ ./crypto substitution_encrypt "defend the east wall of the castle" "abcdefghijklmnopqrstuvwxyz" "phqgiumeaylnofdxjkrcvstzwb"
+giuifg cei iprc tpnn du cei qprcni
+```
+
+## Simple substitution decrypt
+```
+$ ./crypto substitution_decrypt [plaintext] [original] [translation]
+```
+For example,
+```
+$ ./crypto substitution_decrypt "giuifg cei iprc tpnn du cei qprcni" "abcdefghijklmnopqrstuvwxyz" "phqgiumeaylnofdxjkrcvstzwb"
+defend the east wall of the castle
+```
