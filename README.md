@@ -8,12 +8,7 @@ If you haven't already, install Rust. The following command can be used to insta
 ```
 $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
-If you haven't already, add rustc to your PATH using the following commands (on macOS, Linux and other Unix-like OS) to add rustc to your path
-```
-$ cd ~/.cargo/bin
-$ PATH=$PATH:$(pwd)
-```
-Once you've done this, make sure rustc has been added to your path, you can check by running the following and if it gives you a version number, you have succesfully added rustc to your PATH
+Once you've done this, make sure rustc has been added to your path. You can check by running the following and if it gives you a version number, you have succesfully added rustc to your PATH
 ```
 $ rustc -V
 rustc 1.50.0 (cb75ad5db 2021-02-10)
