@@ -1,6 +1,6 @@
 use std::env;
 
-const usage: &str = "Usage: ./crypto caesar_encrypt|caesar_decrypt [plaintext|ciphertext] [shift]\nUsage: ./crypto substitution_encrypt|substitution_decrypt [plaintext|ciphertext] [original] [translation]\nUsage: ./crypto vigenere_encrypt|vigenere_decrypt [plaintext|ciphertext] [key]";
+const usage: &str = "Usage: crypto caesar_encrypt|caesar_decrypt [plaintext|ciphertext] [shift]\nUsage: crypto substitution_encrypt|substitution_decrypt [plaintext|ciphertext] [original] [translation]\nUsage: crypto vigenere_encrypt|vigenere_decrypt [plaintext|ciphertext] [key]";
 
 fn main() {
     let args: Vec<String> = env::args().collect();
