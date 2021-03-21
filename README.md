@@ -26,10 +26,9 @@ $ rustc crypto.rs
 ```
 Then, you can add the directory to the system's path so that you can run the crypto tool from anywhere on your device.
 ```
-$ sudo su
-sh-3.2# echo $( pwd ) >> /etc/paths
+$ echo 'export PATH=$PATH:'$( pwd ) >> ~/.bash_profile
 ```
-Once you've done this, the program can be run from anywhere on your device
+Once you've done this, logged out and logged back into bash, the program can be run from anywhere on your device
 ## Caesar encrypt
 ```
 $ crypto caesar_encrypt [plaintext] [shift]
@@ -40,7 +39,6 @@ $ crypto caesar_encrypt 'Hello world!' 13
 Uryyb jbeyq!
 ```
 shift must be between -127 and 127 inclusive.
-
 ## Caesar decrypt
 ```
 $ crypto caesar_decrypt [plaintext] [shift]
@@ -51,7 +49,6 @@ $ crypto caesar_decrypt 'Uryyb jbeyq!' 13
 Hello world!
 ```
 shift must be between -127 and 127 inclusive
-
 ## Simple substitution encrypt
 ```
 $ crypto substitution_encrypt [plaintext] [original] [translation]
@@ -72,3 +69,23 @@ $ crypto substitution_decrypt "giuifg cei iprc tpnn du cei qprcni" "abcdefghijkl
 defend the east wall of the castle
 ```
 original and translation must be same size with whatever character is in the nth position in the original being decrypted from whatever character is in the nth position in the translation
+## Vigenere encrypt
+```
+$ crypto vigenere_encrypt [plaintext] [key]
+```
+For example,
+```
+$ crypto vigenere_encrypt "hello world" LEMON
+sixzb hsdzq
+```
+The key must be in all capital letters
+## Vigenere decrypt
+```
+$ crypto vigenere_decrypt [ciphertext] [key]
+```
+For example,
+```
+$ crypto vigenere_encrypt "wazxb lkfxq" LEMON
+hello world
+```
+The key must be in all capital letters
