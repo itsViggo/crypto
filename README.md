@@ -23,7 +23,11 @@ Once, you've done this, clone this repository onto your machine and then compile
 $ git clone https://github.com/itsViggo/crypto.git
 $ cd crypto/
 $ rustc crypto.rs
-$ PATH=$PATH:$(pwd)
+```
+Then, you can add the directory to the system's path so that you can run the crypto tool from anywhere on your device.
+```
+$ sudo su
+sh-3.2# echo $( pwd ) >> /etc/paths
 ```
 Once you've done this, the program can be run from anywhere on your device
 ## Caesar encrypt
