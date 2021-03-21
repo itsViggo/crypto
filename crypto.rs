@@ -1,6 +1,6 @@
 use std::env;
 
-const usage: &str = "Usage: ./crypto caesar_encrypt|caesar_decrypt [plaintext] [shift]\nUsage: ./crypto substitution_encrypt|substitution_decrypt [plaintext] [original] [translation]";
+const usage: &str = "Usage: ./crypto caesar_encrypt|caesar_decrypt [plaintext|ciphertext] [shift]\nUsage: ./crypto substitution_encrypt|substitution_decrypt [plaintext|ciphertext] [original] [translation]\nUsage: ./crypto vigenere_encrypt|vigenere_decrypt [plaintext|ciphertext] [key]";
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -16,6 +16,12 @@ fn main() {
         },
         "substitution_decrypt" => {
             println!("{}", substitution_encrypt(args));
+        },
+        "vigenere_encrypt" => {
+            println!("{}", vigenere_encrypt(args));
+        },
+        "vigenere_decrypt" => {
+            println!("{}", vigenere_encrypt(args));
         },
         _ => println!("{}", usage),
     }
@@ -65,6 +71,37 @@ fn substitution_encrypt(args: Vec<String>) -> String{
     for c in plaintext.chars() {
         if original.contains(c) {
             output.push(conversion.chars().nth(original.find(c).unwrap()).unwrap());
+        } else {
+            output.push(c)
+        }
+    }
+    output
+}
+
+fn vigenere_encrypt(args: Vec<String>) -> String{
+    if args.len() != 4 {
+        return usage.to_string()
+    }
+    let plaintext = &args[2];
+    let key = &args[3];
+    for c in key.chars() {
+        if !c.is_uppercase() {
+            return "Please ensure key is in all capital letters".to_string()
+        }
+    }
+    let mut output = String::new();
+    let mut i = 0;
+    for c in plaintext.chars() {
+        let mut shift = key.as_bytes()[i % key.len()] as i8 - 'A' as i8;
+        if args[1] == "vigenere_decrypt" {
+            shift = shift * -1
+        }
+        if c.is_uppercase() {
+            output.push(shift_on_alphabet_starting_with(c, 'A', shift));
+            i += 1;
+        } else if c.is_lowercase() {
+            output.push(shift_on_alphabet_starting_with(c, 'a', shift));
+            i += 1;
         } else {
             output.push(c)
         }
