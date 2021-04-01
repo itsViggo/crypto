@@ -1,7 +1,7 @@
 # crypto
 Something Awesome project by z5255879 (Vicknesh Ravikumar)
 
-This is a cryptography tool built in Rust that, by the end, will be able to encrypt and decrypt using a variety of crypto algorithms. To build the tool, cd into the directory and run `cargo build` (Note: you must have rust installed). To use the tool, navigate into the target/debug directory and use one of the following commands.
+This is a cryptography tool built in Rust that, by the end, will be able to encrypt and decrypt using a variety of crypto algorithms.
 
 ## Installation
 If you haven't already, install Rust. The following command can be used to install Rust on macOS, Linux and other Unix-like OS
