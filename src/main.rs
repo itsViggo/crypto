@@ -1,6 +1,11 @@
 use std::env;
+use num_primes::{Generator,Verification};
+use num_bigint::{BigUint};
+use rand::Rng;
+use ring_algorithm::{is_coprime, extended_euclidian_algorithm};
+use mod_exp::{mod_exp};
 
-const usage: &str = "Usage: crypto caesar_encrypt|caesar_decrypt [plaintext|ciphertext] [shift]\nUsage: crypto substitution_encrypt|substitution_decrypt [plaintext|ciphertext] [original] [translation]\nUsage: crypto vigenere_encrypt|vigenere_decrypt [plaintext|ciphertext] [key]";
+const usage: &str = "Usage: crypto caesar_encrypt|caesar_decrypt [plaintext|ciphertext] [shift]\nUsage: crypto substitution_encrypt|substitution_decrypt [plaintext|ciphertext] [original] [translation]\nUsage: crypto vigenere_encrypt|vigenere_decrypt [plaintext|ciphertext] [key]\nUsage: crypto rsa_keygen\nUsage: crypto rsa_encrypt|rsa_decrypt [plaintext|ciphertext] [public key|private key] modulus";
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -23,6 +28,15 @@ fn main() {
         "vigenere_decrypt" => {
             println!("{}", vigenere_encrypt(args));
         },
+        "rsa_keygen" => {
+            println!("{}", rsa_keygen(args));
+        },
+        "rsa_encrypt" => {
+            println!("{}", rsa_encrypt(args));
+        },
+        "rsa_decrypt" => {
+            println!("{}", rsa_decrypt(args));
+        }
         _ => println!("{}", usage),
     }
 }
@@ -107,6 +121,90 @@ fn vigenere_encrypt(args: Vec<String>) -> String{
         }
     }
     output
+}
+
+fn rsa_keygen(args: Vec<String>) -> String{
+    if args.len() != 2 {
+        println!("{}", usage.to_string())
+    }
+    let p = to_i128(Generator::new_prime(24).to_u32_digits());
+    let q = to_i128(Generator::new_prime(24).to_u32_digits());
+    let n = p * q;
+    let m = (p - 1) * (q - 1);
+    let e = find_coprime(m);
+    let (_, d, _) = extended_euclidian_algorithm(e, m);
+    format!("Public key: {0}, Private key: {1}, Modulus: {2}", e, d.abs(), n)
+}
+
+fn rsa_encrypt(args: Vec<String>) -> String {
+    let mut plaintext = args[2].clone();
+    let mut out = Vec::new();
+    let mut outstring = String::new();
+    let key = args[3].parse::<i128>().unwrap();
+    let modulus = args[4].parse::<i128>().unwrap();
+    for i in 0..plaintext.len()/3 {
+        let n = to_i128(BigUint::from_bytes_le(plaintext[(i*3)..((i+1)*3)].as_bytes()).to_u32_digits());
+        out.push(mod_exp(n, key, modulus));
+    }
+    if plaintext.len() % 3 != 0 {
+        let n = to_i128(BigUint::from_bytes_le(plaintext[((plaintext.len()/3)*3)..].as_bytes()).to_u32_digits());
+        out.push(mod_exp(n, key, modulus));
+    }
+    for num in out {
+        let mut num_string = num.to_string();
+        while (num_string.len() % 14 != 0) {
+            num_string.insert(0, '0');
+        }
+        outstring.push_str(&num_string);
+    }
+    outstring
+}
+
+fn rsa_decrypt(args: Vec<String>) -> String {
+    let key = args[3].parse::<i128>().unwrap();
+    let modulus = args[4].parse::<i128>().unwrap();
+    let ciphertext = args[2].clone();
+    let mut out = String::new();
+    for i in 0..ciphertext.len()/14 {
+        let n = ciphertext[(i*14)..((i+1)*14)].parse::<i128>().unwrap();
+        out.push_str(&from_i128_to_string(mod_exp(n, key, modulus)))
+    }
+    out
+}
+
+fn to_i128(u32_digits: Vec<u32>) -> i128 {
+    let mut out = 0 as i128;
+    let mut i = 1 as i128;
+    for digit in u32_digits {
+        out += i * (digit as i128);
+        i += 1;
+    }
+    out
+}
+
+fn from_i128_to_string(num: i128) -> String {
+    let mut remainder = num;
+    let mut length = 1;
+    let mut out = String::new();
+    while 256_i128.pow(length) < num {
+        length += 1;
+    }
+    while length != 0 {
+        let quotient = remainder.div_euclid(256_i128.pow(length - 1)) as u8;
+        remainder = remainder % 256_i128.pow(length - 1);
+        length -= 1;
+        out.insert(0, quotient as char);
+    }
+    out
+}
+
+fn find_coprime(m: i128) -> i128 {
+    let mut rng = rand::thread_rng();
+    let mut e:u64 = rng.gen();
+    while !is_coprime(m, (e as i128)) {
+        e = rng.gen();
+    }
+    e as i128
 }
 
 fn shift_on_alphabet_starting_with(c: char, start: char, shift: i8) -> char {
