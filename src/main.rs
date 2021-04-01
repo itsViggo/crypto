@@ -127,8 +127,8 @@ fn rsa_keygen(args: Vec<String>) -> String{
     if args.len() != 2 {
         println!("{}", usage.to_string())
     }
-    let p = to_i128(Generator::new_prime(24).to_u32_digits());
-    let q = to_i128(Generator::new_prime(24).to_u32_digits());
+    let p = to_i128(Generator::safe_prime(24).to_u32_digits());
+    let q = to_i128(Generator::safe_prime(24).to_u32_digits());
     let n = p * q;
     let m = (p - 1) * (q - 1);
     let e = find_coprime(m);
