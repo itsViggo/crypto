@@ -94,7 +94,7 @@ For example,
 $ crypto rsa_keygen
 Public key: 1660731135569493607, Private key: 28489273361407, Modulus: 59313237695281
 ```
-### RSA encryption
+## RSA encryption
 ```
 $ crypto rsa_encrypt plaintext publickey modulus
 ```
@@ -103,7 +103,7 @@ For example,
 $ crypto rsa_encrypt 'hello world' 1660731135569493607 59313237695281
 27441933005079169803121519935859356768033046212620562718
 ```
-### RSA decryption
+## RSA decryption
 ```
 $ crypto rsa_decrypt ciphertext privatekey modulus
 ```
