@@ -8,22 +8,23 @@ If you haven't already, install Rust. The following command can be used to insta
 ```
 $ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 ```
-Once you've done this, make sure rustc has been added to your path. You can check by running the following and if it gives you a version number, you have succesfully added rustc to your PATH
+Once you've done this, make sure cargo has been added to your path. You can check by running the following and if it gives you a version number, you have succesfully added rustc to your PATH
 ```
-$ rustc -V
-rustc 1.50.0 (cb75ad5db 2021-02-10)
+$ cargo -V
+cargo 1.50.0 (f04e7fab7 2021-02-04)
 ```
 Once, you've done this, clone this repository onto your machine and then compile it using the following commands
 ```
 $ git clone https://github.com/itsViggo/crypto.git
 $ cd crypto/
-$ rustc crypto.rs
+$ cargo build
 ```
 Then, you can add the directory to the system's path so that you can run the crypto tool from anywhere on your device.
 ```
+$ cd target/debug/
 $ echo 'export PATH=$PATH:'$( pwd ) >> ~/.bash_profile
 ```
-Once you've done this, logged out and logged back into bash, the program can be run from anywhere on your device
+Once you've done this, logged out and logged back into bash, the program can be run from anywhere on your machine
 ## Caesar encrypt
 ```
 $ crypto caesar_encrypt [plaintext] [shift]
@@ -84,3 +85,30 @@ $ crypto vigenere_encrypt "wazxb lkfxq" LEMON
 hello world
 ```
 The key must be in all capital letters
+## RSA key generation
+```
+$ crypto rsa_keygen
+```
+For example,
+```
+$ crypto rsa_keygen
+Public key: 1660731135569493607, Private key: 28489273361407, Modulus: 59313237695281
+```
+### RSA encryption
+```
+$ crypto rsa_encrypt plaintext publickey modulus
+```
+For example,
+```
+$ crypto rsa_encrypt 'hello world' 1660731135569493607 59313237695281
+27441933005079169803121519935859356768033046212620562718
+```
+### RSA decryption
+```
+$ crypto rsa_decrypt ciphertext privatekey modulus
+```
+For example,
+```
+$ crypto rsa_decrypt 27441933005079169803121519935859356768033046212620562718 28489273361407 59313237695281
+hello world
+```
