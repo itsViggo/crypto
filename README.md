@@ -112,3 +112,21 @@ For example,
 $ crypto rsa_decrypt 27441933005079169803121519935859356768033046212620562718 28489273361407 59313237695281
 hello world
 ```
+## Blowfish encryption
+```
+$ crypto blowfish_encrypt plaintext key
+```
+For example,
+```
+$ crypto blowfish_encrypt 'hello world' ABCDEFGH
+901fab56246460dbff3fdca13e6d68b9
+```
+## Blowfish decryption
+```
+$ crypto blowfish_decrypt plaintext key
+```
+For example,
+```
+$ crypto blowfish_decrypt 901fab56246460dbff3fdca13e6d68b9 ABCDEFGH
+hello world
+```
